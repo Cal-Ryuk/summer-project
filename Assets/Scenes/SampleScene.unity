@@ -761,6 +761,10 @@ MonoBehaviour:
   jumpHeight: 5
   gravityIntensity: -3
   isJumping: 0
+  comboCounter: 0
+  comboWindowTimer: 0
+  comboWindowDuration: 0.4
+  canCombo: 0
 --- !u!114 &129113974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,6 +782,7 @@ MonoBehaviour:
   b_Or_ShiftInput: 0
   keyboardWalkAlt: 0
   jumpInput: 0
+  attack_R1: 0
   horizontalInput: 0
   verticalInput: 0
   mouseX: 0
@@ -10766,7 +10771,7 @@ PrefabInstance:
     - target: {fileID: 1979236190521459186, guid: 81c42d17f5312464fb4f985640183229,
         type: 3}
       propertyPath: cameraRotationSpeed
-      value: 4
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1979236190521459186, guid: 81c42d17f5312464fb4f985640183229,
         type: 3}

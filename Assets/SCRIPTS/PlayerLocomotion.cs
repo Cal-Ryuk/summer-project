@@ -70,6 +70,12 @@ public class PlayerLocomotion : MonoBehaviour
     public bool isJumping;
     // REMINDER ---> groundCheckPos is at 0.43 at Y positive at player feet(slightly below knee)
 
+    [Header("COMBAT")]
+    public ComboDataSO currentCombo;
+    [SerializeField] private int comboCounter;
+    [SerializeField] private float comboWindowTimer = 0f;
+    // [SerializeField] private float comboWindowDuration = 0.8f;
+    [SerializeField] private bool canCombo = false;
     #endregion
 
     private void Awake()
@@ -325,11 +331,62 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleAttacksAndCombos()
     {
+        if (comboWindowTimer > 0)
+        {
+            comboWindowTimer -= Time.deltaTime;
+            if (comboWindowTimer <= 0)
+            {
+                comboCounter = 0;
+                canCombo = false;
+            }
+        }
+        if (gameManager.isGroundInteracting && !canCombo) return;
         if (inputManager.attack_R1)
         {
-            inputManager.attack_R1 = false;
-            animatorHandler.PlayTargetAnimation("slash" ,true ,false ,false);
+            if (currentCombo == null || currentCombo.attacks.Length == 0) return;
+
+            canCombo = false;
+
+            if (comboCounter >= currentCombo.attacks.Length) comboCounter = 0;
+
+            ComboAttack attack = currentCombo.attacks[comboCounter];
+            animatorHandler.PlayTargetAnimation(attack.animClip.name, true, false, attack.useRootMotion);
+
+            comboWindowTimer = attack.comboWindowDuration;
+            comboCounter++;
+
+            if (comboCounter >= currentCombo.attacks.Length) comboCounter = 0;
+
+            // if (comboCounter == 0)
+            // {
+            //     animatorHandler.PlayTargetAnimation("slash1", true, false, true);
+            // }
+            // else if (comboCounter == 1)
+            // {
+            //     animatorHandler.PlayTargetAnimation("slash2", true, false, true);
+            // }
+            // else if (comboCounter == 2)
+            // {
+            //     animatorHandler.PlayTargetAnimation("slash3", true, false, true);
+            // }
+            // comboCounter++;
+
+            // if (comboCounter > 2) comboCounter = 0;
+
+            // comboWindowTimer = comboWindowDuration;
         }
+    }
+
+    public void EnableComboWindow()
+    {
+        canCombo = true;
+    }
+
+    public void ResetCombo()
+    {
+        comboCounter = 0;
+        canCombo = false;
+        comboWindowTimer = 0f;
     }
     private void HandlePlayerAnimationValues()
     {

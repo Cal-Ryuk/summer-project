@@ -54,6 +54,7 @@ public class InputManager : MonoBehaviour
             playercontrols.PlayerActionButtons.JumpAXbutton.canceled += ctx => jumpInput = false;
 
             playercontrols.PlayerActionButtons.AttackR1.performed += ctx => attack_R1 = true;
+            playercontrols.PlayerActionButtons.AttackR1.canceled += ctx => attack_R1 = false;
 
             // Sprint/Dodge/ Duck input handling
             playercontrols.PlayerActionButtons.SprintDodge.started += ctx =>

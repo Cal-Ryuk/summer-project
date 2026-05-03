@@ -13,5 +13,6 @@ public class ResetInteractingBool : StateMachineBehaviour
     {
         animator.SetBool(isGroundInteractingBool, isGroundInteractingStatus);
         animator.SetBool(isAirInteractingBool, isAirInteractingStatus);
+        // animator.SetBool("isUsingRootMotion", false);
     }
 }
