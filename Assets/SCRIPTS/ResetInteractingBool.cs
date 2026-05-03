@@ -13,6 +13,8 @@ public class ResetInteractingBool : StateMachineBehaviour
     {
         animator.SetBool(isGroundInteractingBool, isGroundInteractingStatus);
         animator.SetBool(isAirInteractingBool, isAirInteractingStatus);
-        // animator.SetBool("isUsingRootMotion", false);
+        animator.SetBool("isUsingRootMotion", false); //thsi line here resets root motion for both dodge and attacks ,
+        //rightnow the resetting script of bool on dodge state in animator is not being used the checkbox is unchecked because this solves both problems
+    
     }
 }

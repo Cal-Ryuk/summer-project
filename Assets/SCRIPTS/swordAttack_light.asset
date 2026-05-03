@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db8f46807aea1284380d97e5b0844bcf, type: 3}
   m_Name: swordAttack_light
   m_EditorClassIdentifier: 
-  attacks: []
+  attacks:
+  - animClip: {fileID: 7400000, guid: af338c1078ee8cf46b75a5a81e3a18a8, type: 2}
+    comboWindowDuration: 0.5
+    useRootMotion: 1
+  - animClip: {fileID: 7400000, guid: d66c78f79b6f52546b16a38fda9defd1, type: 2}
+    comboWindowDuration: 0.5
+    useRootMotion: 1
+  - animClip: {fileID: 7400000, guid: c1ce24d6f5ffadd408fa0669230d7956, type: 2}
+    comboWindowDuration: 0.5
+    useRootMotion: 1

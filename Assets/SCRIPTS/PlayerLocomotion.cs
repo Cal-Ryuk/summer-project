@@ -329,6 +329,7 @@ public class PlayerLocomotion : MonoBehaviour
         }
     }
 
+    #region Attacks
     private void HandleAttacksAndCombos()
     {
         if (comboWindowTimer > 0)
@@ -388,6 +389,8 @@ public class PlayerLocomotion : MonoBehaviour
         canCombo = false;
         comboWindowTimer = 0f;
     }
+
+    #endregion
     private void HandlePlayerAnimationValues()
     {
         if (sprintCheck && inputManager.moveAmount > 0.6f) //checks for sprint check an if the player is running if player is running then he can sprint  
@@ -396,6 +399,9 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
         animatorHandler.UpdateAnimatorValues(0, inputManager.moveAmount);
+
+        if (gameManager.isGroundInteracting)
+            animatorHandler.CrossFadeToLocomotion(inputManager.moveAmount);
     }
 
     private void OnDrawGizmosSelected()

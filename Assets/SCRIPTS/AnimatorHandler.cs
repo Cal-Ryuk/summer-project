@@ -63,4 +63,11 @@ public class AnimatorHandler : MonoBehaviour
             playerLocomotion.playerRb.velocity = velocity;
         }
     }
+
+    public void CrossFadeToLocomotion(float moveAmount)
+    {
+        if (moveAmount > 0)
+            anim.CrossFade("empty", 0.2f); // snappy if moving
+                                           // if moveAmount is 0, do nothing — let the 0.6s transition play naturally
+    }
 }
