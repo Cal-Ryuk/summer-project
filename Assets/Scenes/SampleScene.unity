@@ -10994,7 +10994,7 @@ PrefabInstance:
     - target: {fileID: 1979236190521459186, guid: 81c42d17f5312464fb4f985640183229,
         type: 3}
       propertyPath: shakeMagnitude
-      value: 0.1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1979236190521459186, guid: 81c42d17f5312464fb4f985640183229,
         type: 3}

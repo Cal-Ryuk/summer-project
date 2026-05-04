@@ -350,6 +350,7 @@ public class PlayerLocomotion : MonoBehaviour
             if (currentCombo == null || currentCombo.attacks.Length == 0) return;
 
             canCombo = false;
+            inputManager.attack_R1 = false;
 
             if (comboCounter >= currentCombo.attacks.Length) comboCounter = 0;
 
