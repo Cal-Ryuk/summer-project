@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class CameraHandler : MonoBehaviour
@@ -23,7 +22,7 @@ public class CameraHandler : MonoBehaviour
     [SerializeField] private float minimumCollisionOffset = 0.2f;
     [SerializeField] private float cameraRecoverySpeed = 100;
 
-    [Header("variables")]        
+    [Header("variables")]
     private float defaultPosition;
 
     private float pivotAngle;
@@ -31,6 +30,14 @@ public class CameraHandler : MonoBehaviour
 
     private Vector3 cameraRefVelocity;
     private Vector3 cameraVectorPosition;
+
+    [Header("Screen Shake")]
+    [SerializeField] private Transform targetShakeObject;
+    [SerializeField] private float shakeDuration = 0.1f;
+    // [SerializeField] private float shakeMagnitude = 0.1f;
+    [SerializeField] private AnimationCurve curve;
+    private Vector3 originalPos;
+    [SerializeField] private bool isShaking = false;
 
     private void Awake()
     {
@@ -88,11 +95,35 @@ public class CameraHandler : MonoBehaviour
 
         if (Mathf.Abs(targetPos) < minimumCollisionOffset)
         {
-            targetPos = - minimumCollisionOffset;
+            targetPos = -minimumCollisionOffset;
         }
 
         cameraVectorPosition.z = Mathf.Lerp(mainCameraObject.localPosition.z, targetPos, cameraRecoverySpeed);
         mainCameraObject.localPosition = cameraVectorPosition;
+    }
+
+    public void TriggerShake()
+    {
+        if (!isShaking)
+            StartCoroutine(Shake());
+    }
+
+    private IEnumerator Shake()
+    {
+        isShaking = true;
+        originalPos = targetShakeObject.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < shakeDuration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            float strength = curve.Evaluate(elapsedTime/shakeDuration);
+            targetShakeObject.localPosition = originalPos + Random.insideUnitSphere * strength;
+            yield return null;
+        }
+
+        targetShakeObject.position = originalPos;
+        isShaking = false;
     }
 }
 

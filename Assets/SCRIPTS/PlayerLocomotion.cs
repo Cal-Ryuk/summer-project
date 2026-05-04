@@ -16,6 +16,7 @@ public class PlayerLocomotion : MonoBehaviour
     private InputManager inputManager;
     private GameManager gameManager;
     private AnimatorHandler animatorHandler;
+    private SwordHitDetection swordHitDetection;
     private Animator animator;
     [HideInInspector] public Rigidbody playerRb;
     private Vector3 moveDir = Vector3.zero;
@@ -84,6 +85,7 @@ public class PlayerLocomotion : MonoBehaviour
         animatorHandler = GetComponent<AnimatorHandler>();
         animator = GetComponent<Animator>();
         gameManager = FindObjectOfType<GameManager>();
+        swordHitDetection = FindObjectOfType<SwordHitDetection>();
     }
 
     private void Start()
@@ -330,6 +332,7 @@ public class PlayerLocomotion : MonoBehaviour
     }
 
     #region Attacks
+
     private void HandleAttacksAndCombos()
     {
         if (comboWindowTimer > 0)
@@ -390,6 +393,15 @@ public class PlayerLocomotion : MonoBehaviour
         comboWindowTimer = 0f;
     }
 
+    public void EnableSwordHitBox()
+    {
+        swordHitDetection.EnableHitBox();
+    }
+
+    public void DisableSwordHitBox()
+    {
+        swordHitDetection.DisableHitBox();
+    }
     #endregion
     private void HandlePlayerAnimationValues()
     {
