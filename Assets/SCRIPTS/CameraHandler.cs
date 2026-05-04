@@ -34,7 +34,7 @@ public class CameraHandler : MonoBehaviour
     [Header("Screen Shake")]
     [SerializeField] private Transform targetShakeObject;
     [SerializeField] private float shakeDuration = 0.1f;
-    // [SerializeField] private float shakeMagnitude = 0.1f;
+    [SerializeField] private float shakeMagnitude = 0.1f;
     [SerializeField] private AnimationCurve curve;
     private Vector3 originalPos;
     [SerializeField] private bool isShaking = false;
@@ -118,7 +118,7 @@ public class CameraHandler : MonoBehaviour
         {
             elapsedTime += Time.unscaledDeltaTime;
             float strength = curve.Evaluate(elapsedTime/shakeDuration);
-            targetShakeObject.localPosition = originalPos + Random.insideUnitSphere * strength;
+            targetShakeObject.localPosition = originalPos + Random.insideUnitSphere * strength * shakeMagnitude;
             yield return null;
         }
 
