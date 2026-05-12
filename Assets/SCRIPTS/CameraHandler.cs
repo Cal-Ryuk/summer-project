@@ -6,6 +6,7 @@ public class CameraHandler : MonoBehaviour
 {
     [Header("references")]
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private PlayerLocomotion playerlocomotion;
     [SerializeField] private Transform targetObject;
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private Transform mainCameraObject;
@@ -41,6 +42,7 @@ public class CameraHandler : MonoBehaviour
 
     private void Awake()
     {
+        playerlocomotion = FindObjectOfType<PlayerLocomotion>();
         targetObject = GameObject.FindWithTag("Player").transform;
         inputManager = targetObject.GetComponent<InputManager>();
         cameraPivot = transform.GetChild(0);
@@ -104,10 +106,10 @@ public class CameraHandler : MonoBehaviour
 
     public void TriggerShake()
     {
-        if (!isShaking)
+        if (!isShaking && playerlocomotion.currentAttackShakes)
             StartCoroutine(Shake());
     }
-
+    
     private IEnumerator Shake()
     {
         isShaking = true;

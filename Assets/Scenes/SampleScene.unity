@@ -771,6 +771,7 @@ MonoBehaviour:
   comboCounter: 0
   comboWindowTimer: 0
   canCombo: 0
+  currentAttackShakes: 0
 --- !u!114 &129113974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10986,6 +10987,12 @@ PrefabInstance:
       propertyPath: minPivot
       value: -35
       objectReference: {fileID: 0}
+    - target: {fileID: 1979236190521459186, guid: 81c42d17f5312464fb4f985640183229,
+        type: 3}
+      propertyPath: currentCombo
+      value: 
+      objectReference: {fileID: 11400000, guid: 64e5def243f9d9943a4c32618993a34a,
+        type: 2}
     - target: {fileID: 1979236190521459186, guid: 81c42d17f5312464fb4f985640183229,
         type: 3}
       propertyPath: shakeDuration

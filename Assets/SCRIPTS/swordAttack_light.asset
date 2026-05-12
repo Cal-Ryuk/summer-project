@@ -16,9 +16,18 @@ MonoBehaviour:
   - animClip: {fileID: 7400000, guid: af338c1078ee8cf46b75a5a81e3a18a8, type: 2}
     comboWindowDuration: 0.5
     useRootMotion: 1
+    isShaking: 1
+    useHitStop: 1
+    hitStopDuration: 0.2
   - animClip: {fileID: 7400000, guid: d66c78f79b6f52546b16a38fda9defd1, type: 2}
     comboWindowDuration: 0.5
     useRootMotion: 1
+    isShaking: 1
+    useHitStop: 1
+    hitStopDuration: 0.2
   - animClip: {fileID: 7400000, guid: c1ce24d6f5ffadd408fa0669230d7956, type: 2}
     comboWindowDuration: 0.5
     useRootMotion: 1
+    isShaking: 1
+    useHitStop: 1
+    hitStopDuration: 0.2

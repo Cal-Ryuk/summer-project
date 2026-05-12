@@ -77,6 +77,9 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float comboWindowTimer = 0f;
     // [SerializeField] private float comboWindowDuration = 0.8f;
     [SerializeField] private bool canCombo = false;
+    public bool currentAttackHitStop = true;
+    public float currentAttackHitStopDuration;
+    public bool currentAttackShakes = false;
     #endregion
 
     private void Awake()
@@ -137,6 +140,11 @@ public class PlayerLocomotion : MonoBehaviour
 
         moveDir.y = 0;
         moveDir.Normalize();
+
+        // if (inputManager.moveAmount > 0 && !gameManager.isGroundInteracting)
+        // {
+        //     ResetCombo();
+        // }
 
         if (sprintCheck && inputManager.moveAmount > 0.6f)
         {
@@ -355,6 +363,9 @@ public class PlayerLocomotion : MonoBehaviour
             if (comboCounter >= currentCombo.attacks.Length) comboCounter = 0;
 
             ComboAttack attack = currentCombo.attacks[comboCounter];
+            currentAttackShakes = attack.isShaking;
+            currentAttackHitStop = attack.useHitStop;
+            currentAttackHitStopDuration = attack.hitStopDuration;
             animatorHandler.PlayTargetAnimation(attack.animClip.name, true, false, attack.useRootMotion);
 
             comboWindowTimer = attack.comboWindowDuration;
