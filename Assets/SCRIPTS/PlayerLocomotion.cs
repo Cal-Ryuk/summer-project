@@ -80,6 +80,7 @@ public class PlayerLocomotion : MonoBehaviour
     public bool currentAttackHitStop = true;
     public float currentAttackHitStopDuration;
     public bool currentAttackShakes = false;
+    public bool nextAttackQueued = false;
     #endregion
 
     private void Awake()
@@ -103,6 +104,8 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (isGrounded)
         {
+            HandleAttacksAndCombos();
+
             if (gameManager.isGroundInteracting)
             {
                 // sets player x and z velocity to zero while interacting 
@@ -120,7 +123,7 @@ public class PlayerLocomotion : MonoBehaviour
                 HandleGroundedRotation();
                 HandlePlayerAnimationValues();
                 HandleDuckingAndDodging();
-                HandleAttacksAndCombos();
+                // HandleAttacksAndCombos();
             }
         }
         else // In Air
@@ -343,53 +346,54 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleAttacksAndCombos()
     {
+        // 1. TIMER: Reset combo and force transition to 'empty' when time runs out
         if (comboWindowTimer > 0)
         {
             comboWindowTimer -= Time.deltaTime;
             if (comboWindowTimer <= 0)
             {
-                comboCounter = 0;
-                canCombo = false;
+                ResetCombo();
             }
         }
-        if (gameManager.isGroundInteracting && !canCombo) return;
+
+        // 2. INPUT BUFFER: Consume the button press and queue the attack
         if (inputManager.attack_R1)
+        {
+            inputManager.attack_R1 = false;
+
+            // Optional state blocking: prevent queueing if dodging/jumping
+            if (!dodgeCheck && !isJumping && isGrounded)
+            {
+                nextAttackQueued = true;
+            }
+        }
+
+        // 3. EXECUTE: Play the attack if it's queued AND we are legally allowed to
+        if (nextAttackQueued && (!gameManager.isGroundInteracting || canCombo))
         {
             if (currentCombo == null || currentCombo.attacks.Length == 0) return;
 
-            canCombo = false;
-            inputManager.attack_R1 = false;
+            nextAttackQueued = false; // Successfully consumed the queue
+            canCombo = false;         // Lock out the next combo until Animation Event fires
 
+            // Safety check for array bounds
             if (comboCounter >= currentCombo.attacks.Length) comboCounter = 0;
 
+            // Fetch attack data from SO
             ComboAttack attack = currentCombo.attacks[comboCounter];
             currentAttackShakes = attack.isShaking;
             currentAttackHitStop = attack.useHitStop;
             currentAttackHitStopDuration = attack.hitStopDuration;
+
+            // Play animation
             animatorHandler.PlayTargetAnimation(attack.animClip.name, true, false, attack.useRootMotion);
 
+            // Advance combo state
             comboWindowTimer = attack.comboWindowDuration;
             comboCounter++;
 
+            // Reset to start if we hit the end of the chain
             if (comboCounter >= currentCombo.attacks.Length) comboCounter = 0;
-
-            // if (comboCounter == 0)
-            // {
-            //     animatorHandler.PlayTargetAnimation("slash1", true, false, true);
-            // }
-            // else if (comboCounter == 1)
-            // {
-            //     animatorHandler.PlayTargetAnimation("slash2", true, false, true);
-            // }
-            // else if (comboCounter == 2)
-            // {
-            //     animatorHandler.PlayTargetAnimation("slash3", true, false, true);
-            // }
-            // comboCounter++;
-
-            // if (comboCounter > 2) comboCounter = 0;
-
-            // comboWindowTimer = comboWindowDuration;
         }
     }
 
@@ -403,6 +407,7 @@ public class PlayerLocomotion : MonoBehaviour
         comboCounter = 0;
         canCombo = false;
         comboWindowTimer = 0f;
+        nextAttackQueued = false;
     }
 
     public void EnableSwordHitBox()
